@@ -15,6 +15,16 @@ return {
 	enable = os.getenv("NVIM_F_LSP") == "1",
 
 	config = function()
+		require("fidget").setup({})
+
+		-- Suppress window/showMessage for info level and below, show warnings and errors
+		-- Workaround for noisy csharp_ls
+		vim.lsp.handlers["window/showMessage"] = function(err, result, ctx, config)
+			if result.type <= vim.lsp.log_levels.INFO then
+				return -- Suppress info and debug messages
+			end
+		end
+
 		local cmp = require("cmp")
 		local cmp_lsp = require("cmp_nvim_lsp")
 		local capabilities = vim.tbl_deep_extend(
@@ -24,7 +34,6 @@ return {
 			cmp_lsp.default_capabilities()
 		)
 
-		require("fidget").setup({})
 		require("mason").setup()
 		require("mason-lspconfig").setup({
 			ensure_installed = {
@@ -153,7 +162,7 @@ return {
 				csharp_ls = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.csharp_ls.setup({
-						cmd = { "csharp-ls" },
+						cmd = { vim.fn.exepath("csharp-ls") },
 						capabilities = capabilities,
 						settings = {
 							csharp = {
