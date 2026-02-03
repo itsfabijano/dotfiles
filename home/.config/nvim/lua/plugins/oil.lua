@@ -12,12 +12,6 @@ return {
 
 		require("oil").setup({
 			columns = { "icon" },
-			confirmation = {
-				border = "rounded",
-			},
-			float = {
-				border = "rounded",
-			},
 			keymaps = {
 				["<C-h>"] = false,
 				["<C-r>"] = "actions.refresh",
@@ -33,16 +27,6 @@ return {
 			},
 			win_options = {
 				winbar = "%{v:lua.CustomOilBar()}",
-			},
-			keymaps_help = {
-				border = "rounded",
-			},
-			progress = {
-				border = "rounded",
-				minimized_border = "rounded",
-			},
-			ssh = {
-				border = "rounded",
 			},
 			view_options = {
 				show_hidden = true,

@@ -1,7 +1,9 @@
 function ColorRefresh(color)
 	color = color or "rose-pine-moon"
 	vim.cmd.colorscheme(color)
-	local p = require("rose-pine.palette")
+
+	vim.o.winborder = "rounded"
+
 	vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#046e30" })
 	vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#950606" })
 	vim.api.nvim_set_hl(0, "DiffChange", { bg = "#2F4146" })

@@ -44,7 +44,6 @@ return {
 				"graphql",
 				"pylsp",
 				"jsonls",
-				"marksman",
 				"vtsls",
 				"copilot",
 			},
@@ -191,7 +190,17 @@ return {
 			},
 			snippet = {
 				expand = function(args)
-					require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+					local ls = require("luasnip")
+					ls.lsp_expand(args.body) -- For `luasnip` users.
+					vim.keymap.set({ "i" }, "<TAB>", function()
+						ls.expand()
+					end, { silent = true })
+					vim.keymap.set({ "i", "s" }, "<TAB>", function()
+						ls.jump(1)
+					end, { silent = true })
+					vim.keymap.set({ "i", "s" }, "<S-TAB>", function()
+						ls.jump(-1)
+					end, { silent = true })
 				end,
 			},
 			mapping = cmp.mapping.preset.insert({
