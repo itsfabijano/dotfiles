@@ -184,10 +184,6 @@ return {
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 		cmp.setup({
-			window = {
-				completion = cmp.config.window.bordered({ border = "rounded" }),
-				documentation = cmp.config.window.bordered({ border = "rounded" }),
-			},
 			snippet = {
 				expand = function(args)
 					local ls = require("luasnip")
@@ -220,14 +216,14 @@ return {
 		vim.diagnostic.config({
 			-- update_in_insert = true,
 			severity_sort = true,
-			float = {
-				focusable = false,
-				style = "minimal",
-				border = "rounded",
-				source = "always",
-				header = "",
-				prefix = "",
-			},
+			-- float = {
+			-- 	focusable = false,
+			-- 	style = "minimal",
+			-- 	border = "rounded",
+			-- 	source = "always",
+			-- 	header = "",
+			-- 	prefix = "",
+			-- },
 		})
 	end,
 }
