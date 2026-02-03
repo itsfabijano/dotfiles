@@ -9,7 +9,7 @@ case "$(uname -s)" in
             echo "Oh My Zsh is already installed."
         fi
         brew bundle install --file ./Brewfile
-        brew bundle cleanup --file ./Brewfile
+        brew bundle cleanup --file ./Brewfile --force
         ;;
     Linux)
         ;;
