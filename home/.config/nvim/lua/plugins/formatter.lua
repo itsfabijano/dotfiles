@@ -9,6 +9,7 @@ return {
 		mason_tools.setup({
 			ensure_installed = {
 				"prettierd",
+				"biome",
 				"stylua",
 				"black",
 			},
@@ -17,9 +18,9 @@ return {
 		conform.setup({
 			formatters_by_ft = {
 				javascript = { "prettierd" },
-				typescript = { "prettierd" },
+				typescript = { "biome", "prettierd", stop_after_first = true },
 				javascriptreact = { "prettierd" },
-				typescriptreact = { "prettierd" },
+				typescriptreact = { "biome", "prettierd", stop_after_first = true },
 				json = { "prettierd" },
 				lua = { "stylua" },
 				graphql = { "prettierd" },
@@ -31,6 +32,14 @@ return {
 				lsp_fallback = true,
 				async = false,
 				timeout_ms = 5000,
+			},
+			formatters = {
+				biome = {
+					condition = function(self, ctx)
+						return vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.filename, upward = true })[1]
+							~= nil
+					end,
+				},
 			},
 		})
 
