@@ -2,11 +2,13 @@
 # equals doesn't matter.
 background = 000000
 cursor-style = block
-shell-integration-features = no-cursor
 macos-titlebar-style = tabs
 macos-non-native-fullscreen = false
 window-theme = ghostty
-term=xterm-256color
+term=xterm-ghostty
+shell-integration-features = no-cursor,ssh-terminfo,ssh-env
+cursor-color = cell-foreground
+cursor-text = cell-background
 background-opacity = 1
 background-blur = 1
 mouse-hide-while-typing = true
