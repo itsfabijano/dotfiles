@@ -18,7 +18,6 @@ return {
 		vim.keymap.set("v", "<leader>9vv", function()
 			_99.visual()
 		end)
-		-- this is some other comment (main)
 		vim.keymap.set("v", "<leader>9vp", function()
 			_99.visual_prompt()
 		end)
