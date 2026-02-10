@@ -15,25 +15,13 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>9ff", function()
-			_99.fill_in_function()
-		end)
-		vim.keymap.set("n", "<leader>9fp", function()
-			_99.fill_in_function_prompt()
-		end)
-		vim.keymap.set("n", "<leader>9fd", function()
-			_99.fill_in_function({
-				additional_rules = {
-					_99:rule_from_path("~/.behaviors/debug.md"),
-				},
-			})
-		end)
 		vim.keymap.set("v", "<leader>9vv", function()
 			_99.visual()
 		end)
 		vim.keymap.set("v", "<leader>9vp", function()
 			_99.visual_prompt()
 		end)
+
 		vim.keymap.set("n", "<leader>9s", function()
 			_99.stop_all_requests()
 		end)
