@@ -1,6 +1,7 @@
 return {
 	"ThePrimeagen/99",
 	config = function()
+		---@type _99
 		local _99 = require("99")
 
 		_99.setup({
@@ -16,10 +17,20 @@ return {
 		})
 
 		vim.keymap.set("v", "<leader>9vv", function()
-			_99.visual()
+			_99.visual({
+				additional_prompt = [[
+                    Analyze the selected code and determine what needs to be done.
+                    If the selection contains TODO comments, notes, or incomplete sections, implement or finalize them.
+                    If the selection contains placeholder code, replace it with proper implementation.
+                    If the selection contains comments describing functionality, implement that functionality.
+                    Consider the surrounding context to understand what the code should do and make the necessary changes.
+                    Make no mistakes. Make it secure.
+                ]],
+			})
 		end)
+
 		vim.keymap.set("v", "<leader>9vp", function()
-			_99.visual_prompt()
+			_99.visual()
 		end)
 
 		vim.keymap.set("n", "<leader>9s", function()

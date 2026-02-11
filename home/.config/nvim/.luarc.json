@@ -1,0 +1,21 @@
+{
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "library": [
+      "${VIMRUNTIME}",
+      "/usr/local/share/nvim/runtime",
+      "/usr/share/nvim/runtime",
+      "/opt/homebrew/share/nvim/runtime",
+      "~/.local/share/nvim/nix-runtime",
+      "~/.local/share/nvim/lazy/snacks.nvim/lua",
+      "~/.local/share/nvim/lazy/99/lua"
+    ]
+  },
+  "diagnostics": {
+    "globals": ["vim", "bit", "it", "describe", "before_each", "after_each"],
+    "disable": ["undefined-field"]
+  }
+}
