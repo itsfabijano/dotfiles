@@ -29,6 +29,12 @@ return {
 			})
 		end)
 
+		vim.keymap.set("n", "<leader>9q", function()
+			_99.search({
+				open_to_qfix = true,
+			})
+		end)
+
 		vim.keymap.set("v", "<leader>9vp", function()
 			_99.visual()
 		end)
