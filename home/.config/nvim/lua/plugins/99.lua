@@ -19,17 +19,17 @@ return {
 		vim.keymap.set("v", "<leader>9vv", function()
 			_99.visual({
 				additional_prompt = [[
-                    Analyze the selected code and determine what needs to be done.
-                    If the selection contains TODO comments, notes, or incomplete sections, implement or finalize them.
-                    If the selection contains placeholder code, replace it with proper implementation.
-                    If the selection contains comments describing functionality, implement that functionality.
-                    Consider the surrounding context to understand what the code should do and make the necessary changes.
-                    Make no mistakes. Make it secure.
-                ]],
+                     Analyze the selected code and determine what needs to be done.
+                     If the selection contains TODO comments, notes, or incomplete sections, implement or finalize them.
+                     If the selection contains placeholder code, replace it with proper implementation.
+                     If the selection contains comments describing functionality, implement that functionality.
+                     Consider the surrounding context to understand what the code should do and make the necessary changes.
+                     Make no mistakes. Make it secure.
+                 ]],
 			})
 		end)
 
-		vim.keymap.set("n", "<leader>9q", function()
+		vim.keymap.set("n", "<leader>9s", function()
 			_99.search({
 				open_to_qfix = true,
 			})
@@ -39,7 +39,7 @@ return {
 			_99.visual()
 		end)
 
-		vim.keymap.set("n", "<leader>9s", function()
+		vim.keymap.set("n", "<leader>9x", function()
 			_99.stop_all_requests()
 		end)
 		vim.keymap.set("n", "<leader>9i", function()
