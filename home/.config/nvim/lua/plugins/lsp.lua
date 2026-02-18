@@ -46,7 +46,6 @@ return {
 				"pylsp",
 				"jsonls",
 				"vtsls",
-				"copilot",
 			},
 			handlers = {
 				function(server_name) -- default handler (optional)
@@ -120,12 +119,6 @@ return {
 								},
 							},
 						},
-					})
-				end,
-
-				copilot = function()
-					require("lspconfig").copilot.setup({
-						capabilities = capabilities,
 					})
 				end,
 			},

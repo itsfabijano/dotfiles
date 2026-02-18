@@ -11,6 +11,11 @@ return {
 			local actions = require("diffview.actions")
 			require("diffview").setup({
 				enhanced_diff_hl = true,
+				view = {
+					default = {
+						layout = "diff2_horizontal",
+					},
+				},
 				keymaps = {
 					view = {
 						{
@@ -79,5 +84,10 @@ return {
 				},
 			})
 		end,
+		keys = {
+			{ "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
+			{ "<leader>dc", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
+			{ "<leader>dh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
+		},
 	},
 }
