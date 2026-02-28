@@ -21,7 +21,7 @@ return {
 				typescript = { "biome", "prettierd", stop_after_first = true },
 				javascriptreact = { "prettierd" },
 				typescriptreact = { "biome", "prettierd", stop_after_first = true },
-				json = { "prettierd" },
+				json = { "biome", "prettierd", stop_after_first = true },
 				lua = { "stylua" },
 				graphql = { "prettierd" },
 				python = { "black" },
@@ -35,7 +35,7 @@ return {
 			},
 			formatters = {
 				biome = {
-					condition = function(self, ctx)
+					condition = function(_, ctx)
 						return vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.filename, upward = true })[1]
 							~= nil
 					end,
