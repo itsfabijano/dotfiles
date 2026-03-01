@@ -5,15 +5,17 @@ return {
 		local _99 = require("99")
 
 		_99.setup({
-			completion = {
-				custom_rules = {
-					"scratch/custom_rules/",
-				},
-				source = "cmp",
-			},
+			show_in_flight_requests = true,
 			md_files = {
 				"AGENT.md",
 			},
+			completion = {
+				custom_rules = {
+					"~/.config/opencode/skills/",
+				},
+				source = "cmp",
+			},
+			model = "openai/gpt-5.3-codex",
 		})
 
 		vim.keymap.set("v", "<leader>9vv", function()
