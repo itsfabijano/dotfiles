@@ -27,12 +27,88 @@ return {
 
 		local cmp = require("cmp")
 		local cmp_lsp = require("cmp_nvim_lsp")
+		local lspconfig = require("lspconfig")
 		local capabilities = vim.tbl_deep_extend(
 			"force",
 			{},
 			vim.lsp.protocol.make_client_capabilities(),
 			cmp_lsp.default_capabilities()
 		)
+		local marksman_cmd_env = nil
+
+		if vim.fn.has("linux") == 1 and vim.fn.isdirectory("/nix/store") == 1 then
+			local paths = vim.tbl_filter(function(path)
+				return path and path ~= ""
+			end, {
+				"/run/current-system/sw/lib",
+				vim.env.LD_LIBRARY_PATH,
+			})
+
+			marksman_cmd_env = {
+				LD_LIBRARY_PATH = table.concat(paths, ":"),
+			}
+		end
+
+		vim.lsp.config("marksman", {
+			capabilities = capabilities,
+			cmd_env = marksman_cmd_env,
+		})
+		vim.lsp.config("vtsls", {
+			capabilities = capabilities,
+			root_dir = lspconfig.util.root_pattern(
+				".git",
+				"pnpm-workspace.yaml",
+				"pnpm-lock.yaml",
+				"yarn.lock",
+				"package-lock.json",
+				"bun.lockb"
+			),
+			typescript = {
+				tsserver = {
+					maxTsServerMemory = 12288,
+				},
+			},
+			experimental = {
+				completion = {
+					entriesLimit = 3,
+				},
+			},
+		})
+		vim.lsp.config("zls", {
+			capabilities = capabilities,
+			root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+			settings = {
+				zls = {
+					enable_inlay_hints = true,
+					enable_snippets = true,
+					warn_style = true,
+				},
+			},
+		})
+		vim.lsp.config("pylsp", {
+			capabilities = capabilities,
+			settings = {
+				pylsp = {
+					plugins = {
+						pycodestyle = { enabled = false },
+					},
+				},
+			},
+		})
+		vim.lsp.config("csharp_ls", {
+			capabilities = capabilities,
+			cmd = { vim.fn.exepath("csharp-ls") },
+			settings = {
+				csharp = {
+					roslyn = {
+						analyzers = true,
+					},
+				},
+			},
+		})
+
+		vim.g.zig_fmt_parse_errors = 0
+		vim.g.zig_fmt_autosave = 0
 
 		require("mason").setup()
 		require("mason-lspconfig").setup({
@@ -46,81 +122,7 @@ return {
 				"pylsp",
 				"jsonls",
 				"vtsls",
-			},
-			handlers = {
-				function(server_name) -- default handler (optional)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
-
-				["vtsls"] = function()
-					require("lspconfig").vtsls.setup({
-						root_dir = require("lspconfig").util.root_pattern(
-							".git",
-							"pnpm-workspace.yaml",
-							"pnpm-lock.yaml",
-							"yarn.lock",
-							"package-lock.json",
-							"bun.lockb"
-						),
-						typescript = {
-							tsserver = {
-								maxTsServerMemory = 12288,
-							},
-						},
-						experimental = {
-							completion = {
-								entriesLimit = 3,
-							},
-						},
-					})
-				end,
-
-				zls = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.zls.setup({
-						root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
-						settings = {
-							zls = {
-								enable_inlay_hints = true,
-								enable_snippets = true,
-								warn_style = true,
-							},
-						},
-					})
-					vim.g.zig_fmt_parse_errors = 0
-					vim.g.zig_fmt_autosave = 0
-				end,
-
-				pylsp = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.pylsp.setup({
-						capabilities = capabilities,
-						settings = {
-							pylsp = {
-								plugins = {
-									pycodestyle = { enabled = false },
-								},
-							},
-						},
-					})
-				end,
-
-				csharp_ls = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.csharp_ls.setup({
-						cmd = { vim.fn.exepath("csharp-ls") },
-						capabilities = capabilities,
-						settings = {
-							csharp = {
-								roslyn = {
-									analyzers = true, -- Enable Roslyn analyzers for better diagnostics
-								},
-							},
-						},
-					})
-				end,
+				"marksman",
 			},
 		})
 
