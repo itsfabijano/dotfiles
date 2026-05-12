@@ -1,174 +1,89 @@
 return {
-	"neovim/nvim-lspconfig",
-	dependencies = {
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-		"hrsh7th/nvim-cmp",
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
-		"j-hui/fidget.nvim",
-	},
-	enable = os.getenv("NVIM_F_LSP") == "1",
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"hrsh7th/cmp-nvim-lsp",
+			{ "j-hui/fidget.nvim", opts = {} },
+		},
+		enable = os.getenv("NVIM_F_LSP") == "1",
 
-	config = function()
-		require("fidget").setup({})
-
-		-- Suppress window/showMessage for info level and below, show warnings and errors
-		-- Workaround for noisy csharp_ls
-		vim.lsp.handlers["window/showMessage"] = function(err, result, ctx, config)
-			if result.type <= vim.lsp.log_levels.INFO then
-				return -- Suppress info and debug messages
-			end
-		end
-
-		local cmp = require("cmp")
-		local cmp_lsp = require("cmp_nvim_lsp")
-		local lspconfig = require("lspconfig")
-		local capabilities = vim.tbl_deep_extend(
-			"force",
-			{},
-			vim.lsp.protocol.make_client_capabilities(),
-			cmp_lsp.default_capabilities()
-		)
-		local marksman_cmd_env = nil
-
-		if vim.fn.has("linux") == 1 and vim.fn.isdirectory("/nix/store") == 1 then
-			local paths = vim.tbl_filter(function(path)
-				return path and path ~= ""
-			end, {
-				"/run/current-system/sw/lib",
-				vim.env.LD_LIBRARY_PATH,
+		config = function()
+			vim.lsp.config("*", {
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 			})
 
-			marksman_cmd_env = {
-				LD_LIBRARY_PATH = table.concat(paths, ":"),
-			}
-		end
+			require("mason").setup()
+			require("mason-lspconfig").setup()
 
-		vim.lsp.config("marksman", {
-			capabilities = capabilities,
-			cmd_env = marksman_cmd_env,
-		})
-		vim.lsp.config("vtsls", {
-			capabilities = capabilities,
-			root_dir = lspconfig.util.root_pattern(
-				".git",
-				"pnpm-workspace.yaml",
-				"pnpm-lock.yaml",
-				"yarn.lock",
-				"package-lock.json",
-				"bun.lockb"
-			),
-			typescript = {
-				tsserver = {
-					maxTsServerMemory = 12288,
-				},
-			},
-			experimental = {
-				completion = {
-					entriesLimit = 3,
-				},
-			},
-		})
-		vim.lsp.config("zls", {
-			capabilities = capabilities,
-			root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
-			settings = {
-				zls = {
-					enable_inlay_hints = true,
-					enable_snippets = true,
-					warn_style = true,
-				},
-			},
-		})
-		vim.lsp.config("pylsp", {
-			capabilities = capabilities,
-			settings = {
-				pylsp = {
-					plugins = {
-						pycodestyle = { enabled = false },
+			-- Get all installed mason packages and set them up
+			local mason_lspconfig = require("mason-lspconfig")
+			local installed_servers = mason_lspconfig.get_installed_servers()
+
+			vim.lsp.config("vtsls", {
+				settings = {
+					complete_function_calls = true,
+					vtsls = {
+						autoUseWorkspaceTsdk = true,
+					},
+					typescript = {
+						updateImportsOnFileMove = { enabled = "always" },
+						suggest = {
+							completeFunctionCalls = true,
+						},
+						preferences = {
+							importModuleSpecifier = "shortest",
+							importModuleSpecifierEnding = "minimal",
+							includePackageJsonAutoImports = "on",
+						},
+						inlayHints = {
+							parameterNames = { enabled = "literals" },
+							parameterTypes = { enabled = true },
+							variableTypes = { enabled = false },
+							propertyDeclarationTypes = { enabled = true },
+							functionLikeReturnTypes = { enabled = true },
+							enumMemberValues = { enabled = true },
+						},
+					},
+					javascript = {
+						updateImportsOnFileMove = { enabled = "always" },
+						preferences = {
+							importModuleSpecifier = "shortest",
+							importModuleSpecifierEnding = "minimal",
+							includePackageJsonAutoImports = "on",
+						},
 					},
 				},
-			},
-		})
-		vim.lsp.config("csharp_ls", {
-			capabilities = capabilities,
-			cmd = { vim.fn.exepath("csharp-ls") },
-			settings = {
-				csharp = {
-					roslyn = {
-						analyzers = true,
-					},
+			})
+
+			for _, server_name in ipairs(installed_servers) do
+				vim.lsp.enable(server_name)
+			end
+		end,
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-path",
+		},
+		config = function()
+			local cmp = require("cmp")
+			local cmp_select = { behavior = cmp.SelectBehavior.Insert }
+			cmp.setup({
+				sources = {
+					{ name = "nvim_lsp" },
 				},
-			},
-		})
-
-		vim.g.zig_fmt_parse_errors = 0
-		vim.g.zig_fmt_autosave = 0
-
-		require("mason").setup()
-		require("mason-lspconfig").setup({
-			ensure_installed = {
-				"eslint",
-				"biome",
-				"lua_ls",
-				"rust_analyzer",
-				"gopls",
-				"graphql",
-				"pylsp",
-				"jsonls",
-				"vtsls",
-				"marksman",
-			},
-		})
-
-		local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-		cmp.setup({
-			snippet = {
-				expand = function(args)
-					local ls = require("luasnip")
-					ls.lsp_expand(args.body) -- For `luasnip` users.
-					vim.keymap.set({ "i" }, "<TAB>", function()
-						ls.expand()
-					end, { silent = true })
-					vim.keymap.set({ "i", "s" }, "<TAB>", function()
-						ls.jump(1)
-					end, { silent = true })
-					vim.keymap.set({ "i", "s" }, "<S-TAB>", function()
-						ls.jump(-1)
-					end, { silent = true })
-				end,
-			},
-			mapping = cmp.mapping.preset.insert({
-				["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-				["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-				["<C-y>"] = cmp.mapping.confirm({ select = true }),
-				["<C-Space>"] = cmp.mapping.complete(),
-			}),
-			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- For luasnip users.
-			}, {
-				{ name = "buffer" },
-			}),
-		})
-
-		vim.diagnostic.config({
-			-- update_in_insert = true,
-			severity_sort = true,
-			-- float = {
-			-- 	focusable = false,
-			-- 	style = "minimal",
-			-- 	border = "rounded",
-			-- 	source = "always",
-			-- 	header = "",
-			-- 	prefix = "",
-			-- },
-		})
-	end,
+				mapping = cmp.mapping.preset.insert({
+					["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+					["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					["<C-Space>"] = cmp.mapping.complete(),
+				}),
+			})
+		end,
+	},
 }

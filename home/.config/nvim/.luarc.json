@@ -11,7 +11,8 @@
       "/opt/homebrew/share/nvim/runtime",
       "~/.local/share/nvim/nix-runtime",
       "~/.local/share/nvim/lazy/snacks.nvim/lua",
-      "~/.local/share/nvim/lazy/99/lua"
+      "~/.local/share/nvim/lazy/99/lua",
+      "~/.local/share/nvim/lazy/opencode.nvim/lua"
     ]
   },
   "diagnostics": {
