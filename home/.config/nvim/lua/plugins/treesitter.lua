@@ -21,16 +21,44 @@ return {
 				"dockerfile",
 				"json",
 				"ruby",
+				"templ",
 			})
+
+			local function is_installed(lang)
+				local installed = treesitter.get_installed()
+				return vim.list_contains(installed, lang)
+			end
+
+			local function enable(bufnr)
+				local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+				if not ok or not parser then
+					return
+				end
+				pcall(vim.treesitter.start)
+			end
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
+					local ft = args.match
+					local lang = vim.treesitter.language.get_lang(ft)
+
 					local bufnr = args.buf
-					local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
-					if not ok or not parser then
+
+					if is_installed(lang) then
+						enable()
 						return
 					end
-					pcall(vim.treesitter.start)
+
+					if not vim.list_contains(treesitter.get_installed(), lang) then
+						return
+					end
+
+					treesitter.install(lang):await(function()
+						if not vim.api.nvim_buf_is_loaded(bufnr) then
+							return
+						end
+						enable(bufnr)
+					end)
 				end,
 			})
 		end,
