@@ -11,17 +11,13 @@ return {
 				"vimdoc",
 				"javascript",
 				"typescript",
-				"c",
 				"lua",
-				"rust",
 				"jsdoc",
 				"bash",
 				"go",
 				"yaml",
 				"dockerfile",
 				"json",
-				"ruby",
-				"templ",
 				"nix",
 			})
 
@@ -50,7 +46,7 @@ return {
 						return
 					end
 
-					if not vim.list_contains(treesitter.get_installed(), lang) then
+					if not vim.list_contains(treesitter.get_available(), lang) then
 						return
 					end
 
