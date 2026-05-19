@@ -22,6 +22,7 @@ return {
 				"json",
 				"ruby",
 				"templ",
+				"nix",
 			})
 
 			local function is_installed(lang)
