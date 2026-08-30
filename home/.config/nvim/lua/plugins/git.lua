@@ -10,6 +10,7 @@ return {
 		config = function()
 			local actions = require("diffview.actions")
 			require("diffview").setup({
+				use_icons = true,
 				enhanced_diff_hl = true,
 				view = {
 					default = {
@@ -86,7 +87,7 @@ return {
 		end,
 		keys = {
 			{ "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
-			{ "<leader>dc", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
+			{ "q", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
 			{ "<leader>dh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
 		},
 	},
