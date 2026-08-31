@@ -6,6 +6,14 @@ return {
 		end,
 	},
 	{
+		"NeogitOrg/neogit",
+		cmd = "Neogit",
+		opts = {},
+		keys = {
+			{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Commit changes" },
+		},
+	},
+	{
 		"sindrets/diffview.nvim",
 		config = function()
 			local actions = require("diffview.actions")
@@ -19,6 +27,7 @@ return {
 				},
 				keymaps = {
 					view = {
+						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
 						{
 							"n",
 							"<leader>co",
@@ -51,6 +60,7 @@ return {
 						},
 					},
 					file_panel = {
+						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
 						{
 							"n",
 							"<leader>cO",
@@ -82,12 +92,14 @@ return {
 							{ desc = "Delete the conflict region for the whole file" },
 						},
 					},
+					file_history_panel = {
+						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
+					},
 				},
 			})
 		end,
 		keys = {
 			{ "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
-			{ "q", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
 			{ "<leader>dh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
 		},
 	},
