@@ -9,6 +9,8 @@ return {
 		"echasnovski/mini.nvim",
 		enabled = true,
 		config = function()
+			require("mini.git").setup()
+
 			-- Better Around/Inside textobjects
 			--
 			-- Examples:

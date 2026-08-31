@@ -6,14 +6,6 @@ return {
 		end,
 	},
 	{
-		"NeogitOrg/neogit",
-		cmd = "Neogit",
-		opts = {},
-		keys = {
-			{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Commit changes" },
-		},
-	},
-	{
 		"sindrets/diffview.nvim",
 		config = function()
 			local actions = require("diffview.actions")
@@ -99,7 +91,7 @@ return {
 			})
 		end,
 		keys = {
-			{ "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
+			{ "<leader>gs", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
 			{ "<leader>dh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
 		},
 	},

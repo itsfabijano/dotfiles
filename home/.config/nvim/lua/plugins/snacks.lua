@@ -5,9 +5,6 @@ return {
 	---@diagnostic disable-next-line: undefined-doc-name
 	---@type snacks.Config
 	opts = {
-		lazygit = {
-			enabled = true,
-		},
 		bigfile = {
 			enabled = true,
 		},
@@ -37,13 +34,4 @@ return {
 			vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#7a7788" }) -- even darker
 		end)
 	end,
-	keys = {
-		{
-			"<leader>gs",
-			function()
-				require("snacks").lazygit()
-			end,
-			desc = "Lazygit",
-		},
-	},
 }
