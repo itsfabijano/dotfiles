@@ -18,6 +18,7 @@ return {
 					},
 				},
 				keymaps = {
+					disable_defaults = false,
 					view = {
 						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
 						{
@@ -50,9 +51,26 @@ return {
 							actions.conflict_choose("none"),
 							{ desc = "Delete the conflict region" },
 						},
+						{
+							"n",
+							"<leader>dg",
+							"<cmd>diffget<cr>",
+							{ desc = "Revert current hunk" },
+						},
 					},
 					file_panel = {
 						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
+						{
+							"n",
+							"D",
+							function()
+								if vim.fn.confirm("Discard all changes?", "&Yes\n&No", 2) == 1 then
+									vim.cmd("Git restore .")
+								end
+							end,
+							{ desc = "Discard all changes" },
+						},
+
 						{
 							"n",
 							"<leader>cO",

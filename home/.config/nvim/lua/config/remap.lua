@@ -10,7 +10,7 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
+vim.keymap.set("n", "<leader>zig", "<cmd>lsp restart<cr>")
 
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
@@ -69,6 +69,6 @@ vim.keymap.set("v", ">", ">gv")
 
 -- Terminal mode: Pass through Shift+Enter as newline for CLI tools
 vim.keymap.set("t", "<S-CR>", function()
-    -- Send the actual newline character that CLI tools expect
-    vim.api.nvim_feedkeys("\n", "t", false)
+	-- Send the actual newline character that CLI tools expect
+	vim.api.nvim_feedkeys("\n", "t", false)
 end, { desc = "Send newline in terminal for CLI tools" })
