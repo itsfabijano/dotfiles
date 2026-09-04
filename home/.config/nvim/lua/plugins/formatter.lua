@@ -8,6 +8,7 @@ return {
 
 		mason_tools.setup({
 			ensure_installed = {
+				"oxfmt",
 				"prettierd",
 				"biome",
 				"stylua",
@@ -17,16 +18,16 @@ return {
 
 		conform.setup({
 			formatters_by_ft = {
-				javascript = { "prettierd" },
-				typescript = { "biome", "prettierd", stop_after_first = true },
-				javascriptreact = { "prettierd" },
-				typescriptreact = { "biome", "prettierd", stop_after_first = true },
-				json = { "biome", "prettierd", stop_after_first = true },
+				javascript = { "oxfmt", "prettierd", stop_after_first = true },
+				typescript = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+				javascriptreact = { "oxfmt", "prettierd", stop_after_first = true },
+				typescriptreact = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+				json = { "oxfmt", "biome", "prettierd", stop_after_first = true },
 				lua = { "stylua" },
-				graphql = { "prettierd" },
+				graphql = { "oxfmt", "prettierd", stop_after_first = true },
 				python = { "black" },
 				astro = { "prettierd" },
-				yaml = { "prettierd" },
+				yaml = { "oxfmt", "prettierd", stop_after_first = true },
 			},
 			format_on_save = {
 				lsp_fallback = true,

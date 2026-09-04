@@ -65,7 +65,8 @@ return {
 							"D",
 							function()
 								if vim.fn.confirm("Discard all changes?", "&Yes\n&No", 2) == 1 then
-									vim.cmd("Git restore .")
+									vim.cmd("Git restore --staged --worktree .")
+									vim.cmd("Git clean -fd")
 								end
 							end,
 							{ desc = "Discard all changes" },
