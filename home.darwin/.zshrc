@@ -6,20 +6,40 @@ alias vi="nvim"
 alias oldvim="vim"
 alias tmx="tmux-session"
 
-ssh_nixbox_retry() {
+nixbox_start() {
+  utmctl start NixOS &> /dev/null || return
+
   while true; do
-    ssh -y nixbox.local
-    exit_code=$?
-    # Stop retrying if SSH session ended successfully
-    [[ $exit_code -eq 0 ]] && break
-    print "ssh failed (exit $exit_code). Retrying in 3s... Press Ctrl-C to stop."
-    sleep 3
+    command ssh -y nixbox.local
+    local ssh_exit=$?
+
+    # A clean logout or tmux detach needs no network probe.
+    (( ssh_exit == 0 )) && break
+
+    # After an abnormal disconnect, a closed port usually means the guest is
+    # rebooting. Wait up to two minutes to reconnect.
+    command nc -z -G 1 nixbox.local 22 &> /dev/null && break
+
+    print "NixOS appears to be restarting; waiting for SSH..."
+    local deadline=$(( SECONDS + 120 ))
+    until command nc -z -G 1 nixbox.local 22 &> /dev/null; do
+      if (( SECONDS >= deadline )); then
+        print -u2 "SSH did not return within two minutes."
+        break 2
+      fi
+      sleep 2
+    done
+    print "SSH is back; reconnecting..."
   done
+
+  print "Suspending NixOS..."
+  utmctl suspend NixOS || return
+  print "NixOS suspended."
 }
 
 alias gcof='git checkout $(git branch --sort=-committerdate | fzf --reverse --height=20% --info=inline)'
 
-alias nixbox:start='utmctl start NixOS &> /dev/null && ssh_nixbox_retry && utmctl suspend NixOS'
+alias nixbox:start='nixbox_start'
 alias nixbox:connect='ssh -y nixbox.local'
 alias nixbox:stop='utmctl suspend NixOS'
 alias nixbox:shutdown='utmctl stop NixOS'
