@@ -60,6 +60,9 @@ return {
 					},
 					file_panel = {
 						{ "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
+						{ "n", "c", "<cmd>Git commit<cr>", { desc = "Git commit" } },
+						{ "n", "P", "<cmd>Git push<cr>", { desc = "Git push" } },
+						{ "n", "p", "<cmd>Git pull --rebase --autostash<cr>", { desc = "Git pull" } },
 						{
 							"n",
 							"D",
