@@ -25,19 +25,6 @@ return {
 				live_grep = {
 					hidden = true,
 				},
-				commands = {
-					theme = "dropdown",
-					entry_maker = function(entry)
-						return {
-							value = entry,
-							ordinal = entry.name, -- Enables filtering
-							display = function(e)
-								return e.value.name -- Only show the command name
-							end,
-							cmd = entry.name, -- Ensures execution works
-						}
-					end,
-				},
 			},
 			extensions = {
 				["ui-select"] = {
@@ -72,6 +59,5 @@ return {
 		set("n", "<leader>pws", builtin.grep_string) -- [P]rep [W]ord [S]earch
 		set("n", "<leader>ps", builtin.live_grep) -- [P]roject [S]earch
 		set("n", "<leader>vh", builtin.help_tags, {}) -- [V]iew [H]elp
-		set("n", "<leader>pc", builtin.commands, {}) -- [P]roject [C]ommands
 	end,
 }

@@ -13,6 +13,7 @@ return {
 				"biome",
 				"stylua",
 				"black",
+				"csharpier",
 			},
 		})
 
@@ -28,6 +29,7 @@ return {
 				python = { "black" },
 				astro = { "prettierd" },
 				yaml = { "oxfmt", "prettierd", stop_after_first = true },
+				cs = { "csharpier" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

@@ -19,3 +19,8 @@ vim.api.nvim_create_user_command("CopyFullPath", function()
 	local full_path = vim.fn.expand("%:p") -- Get the full path
 	copy_to_clipboard(full_path)
 end, {})
+
+vim.api.nvim_create_user_command("LspRestart", function()
+	vim.cmd("lsp restart")
+	vim.cmd("e")
+end, {})

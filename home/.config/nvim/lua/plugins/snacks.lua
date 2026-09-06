@@ -24,6 +24,17 @@ return {
 			enabled = true,
 		},
 	},
+	keys = {
+		{
+			"<leader>pc",
+			function()
+				Snacks.picker.commands({
+					layout = "vscode",
+				})
+			end,
+			desc = "Commands",
+		},
+	},
 	config = function(_, opts)
 		require("snacks").setup(opts)
 		-- Ensure indent is enabled after setup
