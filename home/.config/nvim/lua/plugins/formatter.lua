@@ -37,11 +37,15 @@ return {
 				timeout_ms = 5000,
 			},
 			formatters = {
+				-- Only enable these when their project configuration is found.
+				oxfmt = {
+					require_cwd = true,
+				},
 				biome = {
-					condition = function(_, ctx)
-						return vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.filename, upward = true })[1]
-							~= nil
-					end,
+					require_cwd = true,
+				},
+				prettier = {
+					require_cwd = true,
 				},
 			},
 		})
